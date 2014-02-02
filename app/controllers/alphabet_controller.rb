@@ -2,24 +2,30 @@ class AlphabetController < UIViewController
   def viewDidLoad
     super
     self.title = "Alphabet"
-    @table = UITableView.alloc.initWithFrame(self.view.bounds)
+    @table = UITableView.alloc.initWithFrame(self.view.bounds,
+              style: UITableViewStyleGrouped)
     @table.autoresizingMask = UIViewAutoresizingFlexibleHeight
     self.view.addSubview(@table)
 
     @table.dataSource = self
     @table.delegate = self
 
-    @data = {}
+    @data = generate_data
+  end
+
+  def generate_data
+    data = {}
     ("A".."Z").to_a.each do |letter|
-      @data[letter] = []
+      data[letter] = []
       5.times do
         # Via http://stackoverflow.com/a/88341/910451
         # <3
         random_string = (0..4).map{65.+(rand(25)).chr}.join
-        @data[letter] << letter + random_string
+        data[letter] << letter + random_string
       end  
     end 
-  end
+    data
+  end  
 
   def tableView(tableView, numberOfRowsInSection: section)
     rows_for_section(section).count
